@@ -1,5 +1,0 @@
-{
-    "code-runner.executorMap": {
-        "c": "cd $dir && C:/cygwin64/bin/gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
-    }
-}

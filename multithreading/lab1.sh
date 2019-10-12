@@ -75,7 +75,7 @@ while true; do
     case "$key" in
         1) echo -e "${PWD##*/}";;     # pwd
         2) my_cd;;              # cd
-        3) echo | ls -N -1;;    # ls
+        3) echo | ls -l;;       # ls
         4) my_ln;;              # ln
         5) my_eval;;            # eval
         6) exit 0;;             # exit program
