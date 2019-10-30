@@ -1,8 +1,14 @@
 #ifndef LAB2_UTILS
 #define LAB2_UTILS
 
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "types.h"
+
 //Считает количество вхождений символа в строку
-int countOccurences(char* str, char c)
+int count_occurences(char* str, char c)
 {
     int n = 0;
     for (char* s = str; *s != '\0'; s++)
@@ -27,7 +33,7 @@ char* substring(char* start, char* end)
 //Разбивает строку по заданному символу
 char** split(char* str, char delim, int* n)
 {
-    int numWords = countOccurences(str, delim) + 1;
+    int numWords = count_occurences(str, delim) + 1;
     char** words = malloc( sizeof(char*) * numWords );
     
     char* start = str;
@@ -51,15 +57,38 @@ char** split(char* str, char delim, int* n)
     return words;
 }
 
-//Возвращает true, если строка полностью состоит из цифр от 0 до 7
-bool isOctal(char* str)
+//Возвращает true, если строка полностью состоит из 1-4 цифр от 0 до 7
+bool is_numeric_mode(char* str)
 {
-    for (char* s = str; *s != '\0'; s++)
+    if (*str == '\0') return false;
+
+    char* s = str;
+    while(*s == '0') s++;
+    int len = strlen(s);
+    if (len > 4) return false;
+
+    while (*s != '\0')
     {
-        if (*s < '0' || *s > '7') return FALSE;
+        if (*s < '0' || *s > '7') return false;
+        s++;
     }
 
-    return TRUE;
+    return true;
+}
+
+//Возвращает относительный путь к файлу
+char* get_relative_path(char* dir, char* file)
+{
+    int dirlen = strlen(dir);
+    int filelen = strlen(file);
+
+    char* relative_path = malloc( (dirlen + filelen + 2) * sizeof(char) );
+
+    memcpy(relative_path, dir, dirlen);
+    relative_path[dirlen] = '/';
+    memcpy(relative_path + dirlen + 1, file, filelen + 1);
+
+    return relative_path;
 }
 
 #endif
