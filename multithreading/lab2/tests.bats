@@ -13,7 +13,7 @@ function original_chmod {
 
 function my_chmod {
   run ./chmod "$@"
-  output=$(sed 's/.\/chmod/chmod/g' <<< $output)
+  output=$(sed 's/\.\/chmod/chmod/g' <<< $output)
   reset "${@: -1}"
 }
 
@@ -22,10 +22,7 @@ function runwith {
   my_chmod "$@"
 }
 
-reset simple.file
-reset test1
-reset test2
-reset test3
+reset simple.file test1 test2 test3
 
 @test "444:        returns r--r--r--" {
   runwith -v 444 simple.file 
@@ -69,7 +66,7 @@ reset test3
   [ "$output" = "$original_output" ]
 }
 
-@test "=700,g=u:   returns rx-rx----" {
+@test "=700,g=u:   returns rwxrwx---" {
   runwith -v =700,g=u simple.file 
 
   [ "$status" -eq "$original_status" ]

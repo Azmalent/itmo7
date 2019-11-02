@@ -23,7 +23,6 @@
 #include "args.h"
 
 static int exit_code = EXIT_SUCCESS;
-static char* current_file = NULL;
 
 void mode_str(char* buf, mode_t mode)
 {  
@@ -261,7 +260,7 @@ int process_file(char* file, char* mode_arg, flags_t flags, bool recursed)
     if(lstat(file, &lfstat) < 0 || stat(file, &fstat) < 0)  
     {
         if ( !(flags & NO_ERRORS) ) echoerr("невозможно получить доступ к '%s'", file);
-        if (flags & VERBOSE) echof(STDOUT_FILENO, "не удалось изменить права доступа '%s' с 0000 (---------) на 0000 (---------)", file);
+        if (flags & VERBOSE) echof(STDOUT_FILENO, "не удалось изменить права доступа '%s' с 0000 (---------) на 0000 (---------)\n", file);
         return EXIT_FAILURE;
     }
 
@@ -375,8 +374,7 @@ int main(int argc, char* argv[])
 
     for (int i = 0; i < num_files; i++) 
     {
-        current_file = files[i];
-        int result = process_file(current_file, mode, flags, false);
+        int result = process_file(files[i], mode, flags, false);
         if (result == -1) break;
         exit_code |= result;
     }
