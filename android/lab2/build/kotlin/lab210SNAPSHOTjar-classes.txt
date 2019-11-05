@@ -1,0 +1,1 @@
+/home/dmitry/Рабочий стол/itmo7/android/lab2/build/classes/kotlin/main/Lab2Kt.class
