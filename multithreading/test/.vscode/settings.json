@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "rough.h": "c",
+        "cassert": "cpp"
+    }
+}
