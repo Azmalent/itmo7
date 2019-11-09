@@ -2,8 +2,6 @@
 #include <cstdlib>
 #include <pthread.h>
 
-#include <stdio.h>
-
 #include "rough.hpp"
 
 char Rough::insert(RoughList* list, int key, int value)
