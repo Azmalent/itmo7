@@ -4,11 +4,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.dmitry.lab3.ListElement
 import com.squareup.picasso.Picasso
 import android.view.LayoutInflater
 import android.media.MediaPlayer
-import com.dmitry.lab3.MainActivity
 import com.dmitry.lab3.R
 
 

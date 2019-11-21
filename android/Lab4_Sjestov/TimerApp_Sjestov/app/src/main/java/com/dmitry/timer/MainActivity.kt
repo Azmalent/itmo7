@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     private val handler = Handler()
 
-    lateinit var updateTimer: Runnable
+    val updateTimer: Runnable
     lateinit var incrementTimer: Runnable
 
     init {
@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        
+
         outState.putInt("elapsedSeconds", elapsedSeconds)
         outState.putBoolean("isRunning", isRunning)
     }
