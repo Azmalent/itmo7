@@ -4,18 +4,17 @@
 !*/
 !makefile
 
-# Coverage reports
+# Coverage reports and files
 report/
+*.gcda 
+*.gcno
+.coverage
 
 # Log files
 *.txt
 
 # Compiler outputs
 *.o 
-
-# Gcov files
-*.gcda 
-*.gcno
 
 # Python cache
 __pycache__/
