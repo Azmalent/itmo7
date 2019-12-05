@@ -1,0 +1,1 @@
+pytest --cov=generator --cov-report=html:report/generator
