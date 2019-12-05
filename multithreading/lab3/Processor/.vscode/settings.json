@@ -1,12 +1,5 @@
 {
     "code-runner.executorMap": {
-        "c": "cd $dir && gcc -O3 -pthread $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
-    },
-    "files.associations": {
-        "array": "c",
-        "string": "c",
-        "string_view": "c",
-        "initializer_list": "c",
-        "utility": "c"
+        "c": "cd $dir && make"
     }
 }

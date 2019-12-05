@@ -1,10 +1,3 @@
 {
-    "python.pythonPath": "/usr/bin/python3",
-    "files.associations": {
-        "thread_pool.h": "c",
-        "tasks.h": "c",
-        "messages.h": "c",
-        "ratio": "cpp",
-        "type_traits": "cpp"
-    }
+    "python.pythonPath": "/usr/bin/python3"
 }

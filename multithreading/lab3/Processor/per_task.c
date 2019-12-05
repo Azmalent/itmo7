@@ -1,33 +1,26 @@
-#ifndef LAB3_PER_TASK
-#define LAB3_PER_TASK
-
 #include <pthread.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <wchar.h>
 
-#include "messages.h"
-#include "queue.h"
-#include "writer.h"
+#include "include/per_task.h"
+#include "include/queue.h"
+#include "include/tasks.h"
+#include "include/types.h"
 
-static int thread_count;
-static bool stopped;
+static volatile int thread_count = 0;
 
 void* runner_per_task(void* arg)
 {
     message_t* msg = (message_t*) arg;
-
-    writer_arg_t* writer_args = get_task_stats(msg);
-    enqueue(&writer_queue, writer_args);
-
+    run_task(msg);
     thread_count--;
+
+    return NULL;
 }
 
 void* reader_per_task(void* arg)
 {
-    thread_count = 0;
-
     do
     {
         message_t* msg = malloc( sizeof(message_t) );
@@ -43,6 +36,5 @@ void* reader_per_task(void* arg)
     } while (!stop_recieved);
     
     while (thread_count > 0);
+    return NULL;
 }
-
-#endif

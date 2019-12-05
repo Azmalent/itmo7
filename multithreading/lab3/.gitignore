@@ -1,0 +1,22 @@
+# Ignore all files with no extension, except makefile
+*
+!*.*
+!*/
+!makefile
+
+# Coverage reports
+report/
+
+# Log files
+*.txt
+
+# Compiler outputs
+*.o 
+
+# Gcov files
+*.gcda 
+*.gcno
+
+# Python cache
+__pycache__/
+.pytest_cache/
