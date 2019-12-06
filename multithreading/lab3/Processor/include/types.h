@@ -3,6 +3,7 @@
 
 #include <pthread.h>
 #include <stdbool.h>
+#include <sys/time.h>
 
 typedef enum {
     PER_TASK,
@@ -22,12 +23,5 @@ typedef struct {
     int size;
     int* data;
 } message_t;
-
-typedef struct {
-    pthread_t thread_id;
-    message_t* msg;
-    void* result;
-    unsigned long mcs_elapsed;
-} writer_arg_t;
 
 #endif

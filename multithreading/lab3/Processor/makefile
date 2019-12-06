@@ -29,8 +29,14 @@ tasks.o: tasks.c
 queue.o: queue.c
 	gcc $(COMPILER_ARGS) -o queue.o queue.c
 
+vector.o: vector.c
+	gcc $(COMPILER_ARGS) -o vector.o vector.c
+
 writer.o: writer.c
 	gcc $(COMPILER_ARGS) -o writer.o writer.c
+
+metrics.o: metrics.c
+	gcc $(COMPILER_ARGS) -o metrics.o metrics.c
 
 per_task.o: per_task.c
 	gcc $(COMPILER_ARGS) -o per_task.o per_task.c
@@ -41,5 +47,5 @@ per_type.o: per_type.c
 thread_pool.o: thread_pool.c
 	gcc $(COMPILER_ARGS) -o thread_pool.o thread_pool.c
 
-$(TARGET): main.o message.o tasks.o queue.o writer.o per_task.o per_type.o thread_pool.o
+$(TARGET): main.o message.o tasks.o queue.o vector.o writer.o metrics.o per_task.o per_type.o thread_pool.o
 	gcc $(LINKER_ARGS) -o $(TARGET) $^ 

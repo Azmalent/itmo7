@@ -6,6 +6,7 @@
 #include <sys/time.h>
 
 #include "include/message.h"
+#include "include/types.h"
 #include "include/writer.h"
 
 long fib(int n)
@@ -66,66 +67,64 @@ void bubble_sort(int* values, int n)
 }
 
 
-void run_fib_task(message_t* msg)
+unsigned long run_fib_task(message_t* msg)
 {
-    struct timeval start_time, end_time;
-    gettimeofday(&start_time, NULL);
+    clock_t start_time = clock();
 
     long* result = malloc(sizeof(long));
     *result = fib(msg->data[0]);
     
-    gettimeofday(&end_time, NULL);
-    unsigned long mcs_elapsed = end_time.tv_usec - start_time.tv_usec;
+    clock_t end_time = clock();
 
     writer_arg_t* writer_args = malloc(sizeof(writer_arg_t));
-    *writer_args = (writer_arg_t) { pthread_self(), msg, result, mcs_elapsed };
+    *writer_args = (writer_arg_t) { pthread_self(), msg, result };
     enqueue(&writer_queue, writer_args);
+
+    return (end_time - start_time) * 1000000 / CLOCKS_PER_SEC;
 }
 
-void run_pow_task(message_t* msg)
+unsigned long run_pow_task(message_t* msg)
 {
-    struct timeval start_time, end_time;
-    gettimeofday(&start_time, NULL);
+    clock_t start_time = clock();
 
     double* result = malloc(sizeof(double));
     *result = power(msg->data[0], msg->data[1]);
     
-    gettimeofday(&end_time, NULL);
-    unsigned long mcs_elapsed = end_time.tv_usec - start_time.tv_usec;
+    clock_t end_time = clock();
 
     writer_arg_t* writer_args = malloc(sizeof(writer_arg_t));
-    *writer_args = (writer_arg_t) { pthread_self(), msg, result, mcs_elapsed };
+    *writer_args = (writer_arg_t) { pthread_self(), msg, result };
     enqueue(&writer_queue, writer_args);
+
+    return (end_time - start_time) * 1000000 / CLOCKS_PER_SEC;
 }
 
-void run_sort_task(message_t* msg)
+unsigned long run_sort_task(message_t* msg)
 {
-    struct timeval start_time, end_time;
-    gettimeofday(&start_time, NULL);
+    clock_t start_time = clock();
 
     size_t num_bytes = msg->size * sizeof(int);
     int* result = malloc(num_bytes);
     memcpy(result, msg->data, num_bytes);
     bubble_sort(result, msg->size);
     
-    gettimeofday(&end_time, NULL);
-    unsigned long mcs_elapsed = end_time.tv_usec - start_time.tv_usec;
+    clock_t end_time = clock();
 
     writer_arg_t* writer_args = malloc(sizeof(writer_arg_t));
-    *writer_args = (writer_arg_t) { pthread_self(), msg, result, mcs_elapsed };
+    *writer_args = (writer_arg_t) { pthread_self(), msg, result };
     enqueue(&writer_queue, writer_args);
+
+    return (end_time - start_time) * 1000000 / CLOCKS_PER_SEC;
 }
 
 
-void run_task(message_t* msg)
+unsigned long run_task(message_t* msg)
 {
     switch (msg->type)
     {
-        case FIBONACCI: run_fib_task(msg);  break;
-        case POWER:     run_pow_task(msg);  break;
-        case SORT:      run_sort_task(msg); break;
-        default: 
-            puts("Ошибка при обработке сообщения: неизвестная задача");
-            exit(EXIT_FAILURE);
+        case FIBONACCI: return run_fib_task(msg);  break;
+        case POWER:     return run_pow_task(msg);  break;
+        case SORT:      return run_sort_task(msg); break;
+        default:        return -1;
     }
 }

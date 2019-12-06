@@ -6,59 +6,64 @@
 
 #include "include/message.h"
 #include "include/queue.h"
-#include "include/types.h"
+#include "include/metrics.h"
 #include "include/writer.h"
+
+static vector_t wait_metric = NEW_VECTOR;
+static vector_t write_metric = NEW_VECTOR;
 
 queue_t writer_queue = NEW_QUEUE;
 
-void write_line(FILE* file, pthread_t thread_id, message_t msg, void* result, long mcs_elapsed)
+void write_line(FILE* file, pthread_t thread_id, message_t msg, void* result)
 {
+    clock_t start_time = clock();
+
     fprintf(file, "Thread %lu: ", thread_id);
     switch(msg.type)
     {
         case FIBONACCI: 
-            fprintf(file, "fib %d -> %ld", *(msg.data), *((long*) result) ); 
+            fprintf(file, "fib %d -> %ld\n", *(msg.data), *((long*) result) ); 
             break;
         case POWER:     
-            fprintf(file, "pow %d %d -> %e", msg.data[0], msg.data[1], *((double*) result) );  
+            fprintf(file, "pow %d %d -> %e\n", msg.data[0], msg.data[1], *((double*) result) );  
             break;
         case SORT:      
             fprintf(file, "sort [");
             for (int i = 0; i < msg.size; i++) fprintf(file, " %i", msg.data[i]);
             fprintf(file, " ] -> [");
             for (int i = 0; i < msg.size; i++) fprintf(file, " %i", ((int*) result)[i] ); 
-            fprintf(file, " ]");
+            fprintf(file, " ]\n");
             break;
         default:
             break;
     }  
 
-    fprintf(file, " (%ld microseconds)\n", mcs_elapsed); 
     fflush(file);
+
+    int write_time = (clock() - start_time) * 1000000 / CLOCKS_PER_SEC;
+    vec_append(&write_metric, write_time);
 }
 
 void* writer_thread_func(void* arg)
 {
     FILE* file = fopen(OUT_FILE, "w");
 
-    unsigned long total_mcs = 0;
-
     while (true)
     {
-        writer_arg_t* writer_args = dequeue(&writer_queue);
+        int wait_time;
+        writer_arg_t* writer_args = dequeue(&writer_queue, &wait_time);
         if (writer_args == NULL)
         {
             if (stop_recieved) break;
             else continue;
         }
+        vec_append(&wait_metric, wait_time);
         
         pthread_t tid = writer_args->thread_id;
         message_t* msg = writer_args->msg;
         void* result = writer_args->result;
-        long mcs = writer_args->mcs_elapsed;
 
-        total_mcs += mcs;
-        write_line(file, tid, *msg, result, mcs);
+        write_line(file, tid, *msg, result);
     
         free(msg->data);
         free(msg);
@@ -66,8 +71,16 @@ void* writer_thread_func(void* arg)
         free(writer_args);
     }
     
-    fprintf(file, "TOTAL TIME: %lu microseconds\n", total_mcs);
     fclose(file);
 
     return NULL;
+}
+
+void writer_metrics(int* wait, int* write)
+{
+    *wait = percentile(wait_metric, PERCENTILE);
+    vec_clear(&wait_metric);
+
+    *write = percentile(write_metric, PERCENTILE);
+    vec_clear(&write_metric);
 }

@@ -19,3 +19,6 @@ report/
 # Python cache
 __pycache__/
 .pytest_cache/
+
+# Plots
+plots/

@@ -8,9 +8,11 @@
 
 bool stop_recieved = false;
 
-message_t read_message()
+message_t read_message(int* mcs)
 {
     message_t msg = { -1, 0, NULL };
+
+    clock_t start_time = clock();
 
     size_t bytes_read = read(0, &(msg.type), sizeof(task_t) + sizeof(int));
     if (bytes_read != sizeof(task_t) + sizeof(int))
@@ -36,6 +38,8 @@ message_t read_message()
             exit(EXIT_FAILURE);
         }
     }
+
+    *mcs = (clock() - start_time) * 1000000 / CLOCKS_PER_SEC;
 
     return msg;
 }

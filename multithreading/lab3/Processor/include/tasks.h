@@ -3,9 +3,9 @@
 
 #include "message.h"
 
-void run_fib_task(message_t* msg);
-void run_pow_task(message_t* msg);
-void run_sort_task(message_t* msg);
-void run_task(message_t* msg);
+unsigned long run_fib_task(message_t* msg);
+unsigned long run_pow_task(message_t* msg);
+unsigned long run_sort_task(message_t* msg);
+unsigned long run_task(message_t* msg);
 
 #endif

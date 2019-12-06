@@ -5,6 +5,6 @@
 
 bool stop_recieved;
 
-message_t read_message();
+message_t read_message(int* mcs);
 
 #endif
