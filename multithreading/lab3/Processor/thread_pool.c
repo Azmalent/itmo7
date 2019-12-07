@@ -80,13 +80,8 @@ void* reader_thread_pool(void* arg)
 void metrics_thread_pool(int* read, int* wait, int* work)
 {
     *read = percentile(reader_metric, PERCENTILE);
-    vec_clear(&reader_metric);
-
     *wait = percentile(wait_metric, PERCENTILE);
-    vec_clear(&wait_metric);
-
     *work = percentile(process_metric, PERCENTILE);
-    vec_clear(&process_metric);
 }
 
 void finalize_thread_pool()

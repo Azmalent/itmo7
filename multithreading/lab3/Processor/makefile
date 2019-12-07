@@ -2,6 +2,7 @@ TARGET = processor
 COMPILER_ARGS = -c -std=c99 -Wall -pedantic
 LINKER_ARGS = -pthread
 
+all: COMPILER_ARGS += -O3
 all: $(TARGET) clean
 
 clean:

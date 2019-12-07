@@ -21,10 +21,3 @@ void vec_append(vector_t* vec, int value)
 
     pthread_mutex_unlock( &(vec->mutex) );
 }
-
-void vec_clear(vector_t* vec)
-{
-    pthread_mutex_lock( &(vec->mutex) );
-    vec->length = 0;
-    pthread_mutex_unlock( &(vec->mutex) );
-}

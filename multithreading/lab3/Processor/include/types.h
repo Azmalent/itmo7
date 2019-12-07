@@ -18,9 +18,9 @@ typedef enum {
     STOP
 } task_t;
 
-typedef struct {
+typedef struct __attribute__((__packed__)) {
     task_t type;
-    int size;
+    __uint32_t size;
     int* data;
 } message_t;
 

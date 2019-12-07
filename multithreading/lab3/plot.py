@@ -9,8 +9,7 @@ def init_subplot(sp, points, label, color):
     xs, ys = zip(*points)
 
     sp.set_xlabel('Время (мс)')
-    sp.set_ylabel('Верхний квартиль')
-    sp.grid()
+    sp.set_ylabel('Верхний квартиль (мкс)')
     sp.bar(xs, ys, label=label, color=color)
     sp.legend()
 

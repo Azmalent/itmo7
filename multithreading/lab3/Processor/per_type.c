@@ -111,13 +111,8 @@ void* reader_per_type(void* arg)
 void metrics_per_type(int* read, int* wait, int* work)
 {
     *read = percentile(reader_metric, PERCENTILE);
-    vec_clear(&reader_metric);
-
     *wait = percentile(wait_metric, PERCENTILE);
-    vec_clear(&wait_metric);
-
     *work = percentile(process_metric, PERCENTILE);
-    vec_clear(&process_metric);
 }
 
 void finalize_per_type()

@@ -14,6 +14,5 @@ typedef struct {
 } vector_t;
 
 void vec_append(vector_t* vector, int value);
-void vec_clear(vector_t* vector);
 
 #endif

@@ -61,7 +61,7 @@ normal_subparser.add_argument('-s', '-d', '--sigma', '--deviation', dest='deviat
     help='Standard deviation')
 
 exp_subparser = subparsers.add_parser('exponential', help='Exponential distribution')
-exp_subparser.add_argument('-l', '-p', '--lambda', '--parameter', dest='param', type=int, required=True,
+exp_subparser.add_argument('-l', '-p', '--lambda', '--parameter', dest='param', type=float, required=True,
     help='Exponential parameter')
 
 
@@ -86,7 +86,7 @@ def main():
                 task, values = generate_task(rand)
                 size = len(values)
 
-                format = '<ii' + 'i' * size
+                format = '@ii' + 'i' * size
                 msg = struct.pack(format, task, size, *values)
                 os.write(1, msg)
 
@@ -94,7 +94,7 @@ def main():
             except ValueError as ex:
                 log.write( 'Error in task %i: %s\n' % (i, ex) )
 
-        stop_msg = struct.pack('<ii', 3, 0)
+        stop_msg = struct.pack('@ii', 3, 0)
         os.write(1, stop_msg)
 
 if __name__ == '__main__':

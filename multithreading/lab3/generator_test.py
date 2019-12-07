@@ -19,12 +19,12 @@ def read_messages(args):
 
     messages = []
     while True:
-        header_size = struct.calcsize('<ii')
+        header_size = struct.calcsize('@ii')
         header_bytes = bytes( process.stdout.read(header_size), encoding='ascii' )
-        msg_type, msg_argc = struct.unpack('<ii', header_bytes)
+        msg_type, msg_argc = struct.unpack('@ii', header_bytes)
 
         if msg_argc > 0:
-            arg_format = 'i' * msg_argc
+            arg_format = '@' + 'i' * msg_argc
             arg_size = struct.calcsize(arg_format)
             arg_bytes = bytes( process.stdout.read(arg_size), encoding='ascii' )
             msg_argv = list( struct.unpack(arg_format, arg_bytes) )

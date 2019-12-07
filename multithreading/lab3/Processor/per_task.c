@@ -53,10 +53,7 @@ void* reader_per_task(void* arg)
 void metrics_per_task(int* read, int* work)
 {
     *read = percentile(reader_metric, PERCENTILE);
-    vec_clear(&reader_metric);
-
     *work = percentile(process_metric, PERCENTILE);
-    vec_clear(&process_metric);
 }
 
 void finalize_per_task()

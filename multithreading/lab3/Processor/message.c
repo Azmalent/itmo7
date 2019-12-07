@@ -8,18 +8,34 @@
 
 bool stop_recieved = false;
 
+void strict_read(int fd, void* buf, size_t num_bytes)
+{
+    int total_bytes_read = 0;
+    char* char_buf = (char*) buf;
+
+    while (total_bytes_read < num_bytes)
+    {
+        int bytes_read = read(fd, char_buf + total_bytes_read, num_bytes - total_bytes_read);
+        if (bytes_read <= 0)
+        {
+            puts("Ошибка при чтении сообщения");
+            exit(EXIT_FAILURE);
+        }
+
+        total_bytes_read += bytes_read;
+    }
+}
+
 message_t read_message(int* mcs)
 {
     message_t msg = { -1, 0, NULL };
 
-    clock_t start_time = clock();
+    int read_time = 0;
 
-    size_t bytes_read = read(0, &(msg.type), sizeof(task_t) + sizeof(int));
-    if (bytes_read != sizeof(task_t) + sizeof(int))
-    {
-        puts("Ошибка при чтении сообщения");
-        exit(EXIT_FAILURE);
-    }
+    clock_t start_time = clock();
+    strict_read(0, &(msg.type), sizeof(task_t) + sizeof(int));
+    read_time += (clock() - start_time) * 1000000 / CLOCKS_PER_SEC;
+
 
     if (msg.type < FIBONACCI || msg.type > STOP)
     {
@@ -30,16 +46,14 @@ message_t read_message(int* mcs)
     if (msg.size > 0)
     {
         size_t num_bytes = msg.size * sizeof(int);
+
         msg.data = malloc(num_bytes);
-        bytes_read = read(0, msg.data, num_bytes);
-        if (num_bytes != bytes_read)
-        {
-            puts("Ошибка при чтении сообщения");
-            exit(EXIT_FAILURE);
-        }
+        
+        start_time = clock();
+        strict_read(0, msg.data, num_bytes);
+        read_time += (clock() - start_time) * 1000000 / CLOCKS_PER_SEC;
     }
 
-    *mcs = (clock() - start_time) * 1000000 / CLOCKS_PER_SEC;
-
+    *mcs = read_time;
     return msg;
 }

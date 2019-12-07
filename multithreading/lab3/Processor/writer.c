@@ -79,8 +79,5 @@ void* writer_thread_func(void* arg)
 void writer_metrics(int* wait, int* write)
 {
     *wait = percentile(wait_metric, PERCENTILE);
-    vec_clear(&wait_metric);
-
     *write = percentile(write_metric, PERCENTILE);
-    vec_clear(&write_metric);
 }
