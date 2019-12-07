@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lab4", "Collections\lab4.csproj", "{6F4C7CB5-13C4-43B4-907F-6A5B305AF12A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lab4", "Source\lab4.csproj", "{6F4C7CB5-13C4-43B4-907F-6A5B305AF12A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lab4-tests", "Tests\lab4-tests.csproj", "{9B9DBDC7-0BB4-4418-BBD8-9A7A93B4092E}"
 EndProject
