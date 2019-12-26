@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Lab6_Sjestov</string>
+    <string name="drawer_home">Home</string>
+    <string name="drawer_about">About</string>
+    <string name="drawer_playlist1">PLAYLIST 1</string>
+    <string name="drawer_playlist2">PLAYLIST 2</string>
+    <string name="drawer_playlist3">PLAYLIST 3</string>
+    <string name="about">© Dmitry Sjestov, 2019\n\nThis application is licensed under\nthe WTFPL license.</string>
+</resources>
