@@ -2,56 +2,46 @@ package dmitry.lab4
 
 import io.kotlintest.IsolationMode
 import io.kotlintest.shouldBe
-import io.kotlintest.shouldThrow
 import io.kotlintest.specs.WordSpec
-import java.lang.IllegalArgumentException
 
 class UnitTests : WordSpec() {
     override fun isolationMode() = IsolationMode.InstancePerLeaf
 
-    private val set = ConcurrentSet<Int>(1)
+    private val list = ConcurrentList<Int>()
 
     init {
-        "Constructor" should {
-            "throw IllegalArgumentException on non-positive hashtableSize" {
-                shouldThrow<IllegalArgumentException> {
-                    ConcurrentSet<Int>(-1)
-                }
-            }
-        }
-
         "Addition" should {
             "return true on success" {
-                set.add(1) shouldBe true
-                set.contains(1) shouldBe true
+                list.add(1) shouldBe true
+                list.contains(1) shouldBe true
             }
 
             "return false if element exists" {
-                set.add(1)
-                set.add(1) shouldBe false
+                list.add(1)
+                list.add(1) shouldBe false
             }
 
             "work with multiple elements" {
-                set.add(1) shouldBe true
-                set.add(2) shouldBe true
-                set.add(3) shouldBe true
+                list.add(1) shouldBe true
+                list.add(2) shouldBe true
+                list.add(3) shouldBe true
 
-                set.contains(1) shouldBe true
-                set.contains(2) shouldBe true
-                set.contains(3) shouldBe true
+                list.contains(1) shouldBe true
+                list.contains(2) shouldBe true
+                list.contains(3) shouldBe true
             }
         }
 
         "Deletion" should {
             "return true on success" {
-                set.add(1)
-                set.remove(1) shouldBe true
+                list.add(1)
+                list.remove(1) shouldBe true
 
-                set.isEmpty shouldBe true
+                list.isEmpty shouldBe true
             }
 
             "return false if element doesn't exist" {
-                set.remove(1) shouldBe false
+                list.remove(1) shouldBe false
             }
         }
     }

@@ -19,14 +19,33 @@ class ConcurrentList<T> where T : Comparable<T> {
     }
 
     val isEmpty: Boolean
-        get() = head.next.reference === tail
+        get() {
+            retry@ while (true) {
+                val marked = booleanArrayOf(false)
+                var first = head.next.get(marked)
+
+                if (first === tail) return true
+                else if (!marked[0]) return false
+
+                while (true) {
+                    var next = head.next.get(marked)
+                    while (marked[0]) {
+                        if (!head.next.compareAndSet(first, next, false, false)) {
+                            continue@retry
+                        }
+                        first = next
+                        next = first.next.get(marked)
+                    }
+                }
+            }
+        }
 
     fun contains(key: T): Boolean {
         var current = head.next.reference
         val marked = booleanArrayOf(false)
         current.next.get(marked)
 
-        while (current !== tail && key > current.key!!) {
+        while (current !== tail && current.key!! < key) {
             current = current.next.reference
             current.next.get(marked)
         }
@@ -45,17 +64,17 @@ class ConcurrentList<T> where T : Comparable<T> {
 
             while (true) {
                 val marked = booleanArrayOf(false)
-                var next = current!!.next.get(marked)
+                var next = current.next.get(marked)
 
                 while (marked[0]) {
                     if (!previous.next.compareAndSet(current, next, false, false)) {
                         continue@retry
                     }
                     current = next
-                    next = current!!.next[marked]
+                    next = current.next.get(marked)
                 }
 
-                if (current === tail || key <= current.key!!) {
+                if (current === tail || current.key!! >= key) {
                     return Window(previous, current)
                 }
 
@@ -86,8 +105,6 @@ class ConcurrentList<T> where T : Comparable<T> {
 
             if (current.key != key) return false
 
-            //Здесь нельзя использовать attemptMark(),
-            //поскольку он возвращает true, если метка уже стоит
             val next = current.next.reference
             if (!current.next.compareAndSet(next, next, false, true)) {
                 continue
